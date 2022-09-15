@@ -1,8 +1,9 @@
 /*GALLERY MARKUP*/
 
 const gallery = document.querySelector('#gallery');
-const card = document.querySelector('.card');
+const card = document.querySelector('.card')
 const modal = document.querySelector('.modal-container');
+
 
 const body = document.body;
 const modalHTML = `
@@ -23,8 +24,6 @@ const modalHTML = `
 
 
 `;
-
-
 
 fetch('https://randomuser.me/api/?inc=picture,name,email,location&results=12')
     .then(res => res.json())
@@ -52,5 +51,5 @@ function generateCard(data) {
 };
 
 card.addEventListener('click', () => {
-    body.insertAdjacentHTML('beforeend', modalHTML);
+    console.log('it works!')
 })
