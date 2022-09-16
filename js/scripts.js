@@ -1,10 +1,6 @@
 /*GALLERY MARKUP*/
 
 const gallery = document.querySelector('#gallery');
-const card = document.querySelector('.card')
-const modal = document.querySelector('.modal-container');
-
-
 const body = document.body;
 const modalHTML = `
     <div class="modal-container">
@@ -47,9 +43,11 @@ function generateCard(data) {
         `;
 
         gallery.insertAdjacentHTML('beforeend', cardHTML);
+         
     }
+      const cards = document.querySelectorAll('.card');
+        cards.forEach(card => card.addEventListener('click', () => {
+            console.log('it works!');
+         }) );
 };
 
-card.addEventListener('click', () => {
-    console.log('it works!')
-})
