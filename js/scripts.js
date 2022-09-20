@@ -18,16 +18,17 @@ const modal = `
     const modalInfo = document.querySelector('modal-info-container');
     
     const closeModal = document.querySelector('#modal-close-btn');
-    closeModal.onclick = () => {
-        modalInfo.remove(modalHTML);
+    closeModal.addEventListener ('click', () => {
         modalContainer.style.display = 'none';
-    }
+    })
 
 fetch('https://randomuser.me/api/?nat=us&?inc=picture,name,email,location,cell,dob&results=12')
     .then(res => res.json())
-    .then(data => data.results)
-    .then(generateCard)
-  
+    .then(data => 
+        {const profiles = data.results
+    generateCard (profiles);
+    // insertModal(profiles);
+        })
 
 
 /*GALLERY MARKUP*/
@@ -35,25 +36,27 @@ fetch('https://randomuser.me/api/?nat=us&?inc=picture,name,email,location,cell,d
 function generateCard(data) {
     for (let i = 0; i < data.length; i++ ) {
         const cardHTML = `
-            <div class="card">
-                <div class="card-img-container">
-                    <img class="card-img" src="${data[i].picture.medium}" alt="profile picture">
+            <div class="card" data-parent="${i}">
+                <div class="card-img-container" data-index-number="${i}">
+                    <img class="card-img" src="${data[i].picture.medium} " alt="profile picture" data-index-number="${i}">
                 </div>
-                <div class="card-info-container">
+                <div class="card-info-container" data-index-number="${i}">
                     <h3 id="name" class="card-name cap">${data[i].name.first} ${data[i].name.last}</h3>
                     <p class="card-text">${data[i].email}</p>
                     <p class="card-text cap">${data[i].location.city}, ${data[i].location.state}</p>
                 </div>
             </div>
             `;
-
+      
         gallery.insertAdjacentHTML('beforeend', cardHTML);
         
     }
 
     const cards = document.querySelectorAll('.card');
-    cards.forEach(card => card.addEventListener('click', () => {
-        modalContainer.style.display = 'block';
+    cards.forEach(card => card.addEventListener('click', (e) => {
+        const cardProfile = e.target.parentElement.dataset.indexNumber;
+        console.log(cardProfile);
+        // modalContainer.style.display = 'block';
         }) 
     )
 };
