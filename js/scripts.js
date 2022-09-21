@@ -36,11 +36,11 @@ fetch('https://randomuser.me/api/?nat=us&?inc=picture,name,email,location,cell,d
 function generateCard(data) {
     for (let i = 0; i < data.length; i++ ) {
         const cardHTML = `
-            <div class="card" data-parent="${i}">
-                <div class="card-img-container" data-index-number="${i}">
-                    <img class="card-img" src="${data[i].picture.medium} " alt="profile picture" data-index-number="${i}">
+            <div class="card" data-index-number="${i}">
+                <div class="card-img-container">
+                    <img class="card-img" src="${data[i].picture.medium} " alt="profile picture" >
                 </div>
-                <div class="card-info-container" data-index-number="${i}">
+                <div class="card-info-container" >
                     <h3 id="name" class="card-name cap">${data[i].name.first} ${data[i].name.last}</h3>
                     <p class="card-text">${data[i].email}</p>
                     <p class="card-text cap">${data[i].location.city}, ${data[i].location.state}</p>
@@ -53,8 +53,8 @@ function generateCard(data) {
     }
 
     const cards = document.querySelectorAll('.card');
-    cards.forEach(card => card.addEventListener('click', (e) => {
-        const cardProfile = e.target.parentElement.dataset.indexNumber;
+    cards.forEach(card => card.addEventListener('click', (event) => {
+        const cardProfile = event.currentTarget.dataset.indexNumber;
         console.log(cardProfile);
         // modalContainer.style.display = 'block';
         }) 
