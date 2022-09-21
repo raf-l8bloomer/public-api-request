@@ -1,33 +1,28 @@
 const gallery = document.querySelector('#gallery');
 const body = document.body;
 
-const modal = `
-    <div class="modal-container">
-    <div class="modal">
-        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-        <div class="modal-info-container">
+// const modal = `
+  
         
-        </div>
-    </div>
-    `
-    body.insertAdjacentHTML('beforeend', modal);
 
-    const modalContainer = document.querySelector('.modal-container');
-    modalContainer.style.display = 'none';
+//     `
+//     body.insertAdjacentHTML('beforeend', modal);
 
-    const modalInfo = document.querySelector('modal-info-container');
+//     const modalContainer = document.querySelector('.modal-container');
+//     modalContainer.style.display = 'none';
+
     
-    const closeModal = document.querySelector('#modal-close-btn');
-    closeModal.addEventListener ('click', () => {
-        modalContainer.style.display = 'none';
-    })
+//     const closeModal = document.querySelector('#modal-close-btn');
+//     closeModal.addEventListener ('click', () => {
+//         modalContainer.style.display = 'none';
+//     })
 
 fetch('https://randomuser.me/api/?nat=us&?inc=picture,name,email,location,cell,dob&results=12')
     .then(res => res.json())
     .then(data => 
         {const profiles = data.results
     generateCard (profiles);
-    // insertModal(profiles);
+    console.log(profiles);
         })
 
 
@@ -54,25 +49,35 @@ function generateCard(data) {
 
     const cards = document.querySelectorAll('.card');
     cards.forEach(card => card.addEventListener('click', (event) => {
-        const cardProfile = event.currentTarget.dataset.indexNumber;
-        console.log(cardProfile);
-        // modalContainer.style.display = 'block';
+        const index = event.currentTarget.dataset.indexNumber;
+        insertModal(data, index);
+        console.log(index);
+        modalContainer.style.display = 'block';
+       
         }) 
     )
 };
 
 
 
-function insertModal(data) {
+function insertModal(data, index) {
     const modalHTML = `
-    <img class="modal-img" src="${data.picture.large}" alt="profile picture">
-    <h3 id="name" class="modal-name cap">${data.name.first} ${data.name.last}</h3>
-    <p class="modal-text">${data.email}</p>
-    <p class="modal-text cap">${data.location.city}</p>
+    <div class="modal-container">
+    <div class="modal">
+        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+        <div class="modal-info-container">
+    <img class="modal-img" src="${data[index].picture.large}" alt="profile picture">
+    <h3 id="name" class="modal-name cap">${data[index].name.first} ${data[index].name.last}</h3>
+    <p class="modal-text">${data[index].email}</p>
+    <p class="modal-text cap">${data[index].location.city}</p>
     <hr>
-    <p class="modal-text">${data.phone}</p>
-    <p class="modal-text">${data.location.street.number} ${data.location.street.name}, ${data.location.city}, ${data.location.state} ${data.location.postcode}</p>
-    <p class="modal-text">Birthday: ${data.dob}</p>
+    <p class="modal-text">${data[index].phone}</p>
+    <p class="modal-text">${data[index].location.street.number} ${data[index].location.street.name}, ${data[index].location.city}, ${data[index].location.state} ${data[index].location.postcode}</p>
+    <p class="modal-text">Birthday: ${data[index].dob}</p>
+    </div>
+    </div>
     `
-    modalInfo.insertAdjacentHTML('beforeend', modalHTML);
+
+    // const modalInfo = document.querySelector('modal-info-container');
+    body.insertAdjacentHTML('beforeend', modalHTML);
 }
