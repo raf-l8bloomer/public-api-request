@@ -7,11 +7,7 @@ fetch('https://randomuser.me/api/?nat=us&?inc=picture,name,email,location,cell,d
     .then(data => 
         {const profiles = data.results
     generateCard (profiles);
-   
         })
-
-
-
 
 //Creates a card per profile pulled from API
 function generateCard(data) {
@@ -30,8 +26,8 @@ function generateCard(data) {
             `;
       
         gallery.insertAdjacentHTML('beforeend', cardHTML);
-        
     }
+
 //Makes all cards clickable and provides more information from profile
     const cards = document.querySelectorAll('.card');
     cards.forEach(card => card.addEventListener('click', (event) => {
@@ -47,19 +43,19 @@ function generateCard(data) {
 function generateModal(data, index) {
     const modalHTML = `
     <div class="modal-container">
-    <div class="modal">
-        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-        <div class="modal-info-container">
-    <img class="modal-img" src="${data[index].picture.large}" alt="profile picture">
-    <h3 id="name" class="modal-name cap">${data[index].name.first} ${data[index].name.last}</h3>
-    <p class="modal-text">${data[index].email}</p>
-    <p class="modal-text cap">${data[index].location.city}</p>
-    <hr>
-    <p class="modal-text">${data[index].phone}</p>
-    <p class="modal-text">${data[index].location.street.number} ${data[index].location.street.name}, ${data[index].location.city}, ${data[index].location.state} ${data[index].location.postcode}</p>
-    <p class="modal-text">Birthday: ${convertDate((data[index].dob.date))}</p>
-    </div>
-    </div>
+        <div class="modal">
+            <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+            <div class="modal-info-container">
+                <img class="modal-img" src="${data[index].picture.large}" alt="profile picture">
+                <h3 id="name" class="modal-name cap">${data[index].name.first} ${data[index].name.last}</h3>
+                <p class="modal-text">${data[index].email}</p>
+                <p class="modal-text cap">${data[index].location.city}</p>
+                <hr>
+                <p class="modal-text">${data[index].phone}</p>
+                <p class="modal-text">${data[index].location.street.number} ${data[index].location.street.name}, ${data[index].location.city}, ${data[index].location.state} ${data[index].location.postcode}</p>
+                <p class="modal-text">Birthday: ${convertDate((data[index].dob.date))}</p>
+            </div>
+        </div>
     `
 
     body.insertAdjacentHTML('beforeend', modalHTML);
@@ -72,6 +68,7 @@ function generateModal(data, index) {
     })
 }
 
+
 //When clicked, the whole modal is removed from the body
 function closeModal() {
     const modalContainer = document.querySelector('.modal-container');
@@ -79,13 +76,12 @@ function closeModal() {
     modalContainer.style.display = 'none';
 }
 
-
 //Changes long form birth date to MM/DD/YYYY format
 function convertDate(birthdate){
     const birthday = new Date(birthdate);
 
-    const month = birthday.getMonth();
-    const day = birthday.getDay();
+    const month = birthday.getMonth() + 1;
+    const day = birthday.getDay() + 1;
     const year = birthday.getFullYear();
     const shortDate = `${month}/${day}/${year}`;
     return shortDate;
@@ -112,6 +108,4 @@ search.addEventListener('keyup', e => {
             name.parentNode.parentNode.style.display = 'none';
         }
     })
-})
-
-    // if search != name, card.style.display ='none'
+});
