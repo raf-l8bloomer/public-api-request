@@ -1,5 +1,6 @@
 const gallery = document.querySelector('#gallery');
 const body = document.body;
+const searchContainer = document.querySelector('.search-container');
 
 fetch('https://randomuser.me/api/?nat=us&?inc=picture,name,email,location,cell,dob&results=12')
     .then(res => res.json())
@@ -10,8 +11,9 @@ fetch('https://randomuser.me/api/?nat=us&?inc=picture,name,email,location,cell,d
         })
 
 
-/*GALLERY MARKUP*/
 
+
+//Creates a card per profile pulled from API
 function generateCard(data) {
     for (let i = 0; i < data.length; i++ ) {
         const cardHTML = `
@@ -30,21 +32,18 @@ function generateCard(data) {
         gallery.insertAdjacentHTML('beforeend', cardHTML);
         
     }
-
+//Makes all cards clickable and provides more information from profile
     const cards = document.querySelectorAll('.card');
     cards.forEach(card => card.addEventListener('click', (event) => {
         const index = event.currentTarget.dataset.indexNumber;
         generateModal(data, index);
-        console.log(index);
-        // modalContainer.style.display = 'block';
-       
         }) 
     )
 };
 
 
-/*MODAL MARKUP*/
 
+//Creates modal with more in-depth information from clicked profile card
 function generateModal(data, index) {
     const modalHTML = `
     <div class="modal-container">
@@ -58,7 +57,7 @@ function generateModal(data, index) {
     <hr>
     <p class="modal-text">${data[index].phone}</p>
     <p class="modal-text">${data[index].location.street.number} ${data[index].location.street.name}, ${data[index].location.city}, ${data[index].location.state} ${data[index].location.postcode}</p>
-    <p class="modal-text">Birthday: ${data[index].dob.date}</p>
+    <p class="modal-text">Birthday: ${convertDate((data[index].dob.date))}</p>
     </div>
     </div>
     `
@@ -79,3 +78,40 @@ function closeModal() {
     modalContainer.remove();
     modalContainer.style.display = 'none';
 }
+
+
+//Changes long form birth date to MM/DD/YYYY format
+function convertDate(birthdate){
+    const birthday = new Date(birthdate);
+
+    const month = birthday.getMonth();
+    const day = birthday.getDay();
+    const year = birthday.getFullYear();
+    const shortDate = `${month}/${day}/${year}`;
+    return shortDate;
+}
+
+//Add search bar
+const searchHtml = `
+    <form action="#" method="get">
+     <input type="search" id="search-input" class="search-input" placeholder="Search...">
+     <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+    </form>
+     `
+    searchContainer.insertAdjacentHTML('beforeend', searchHtml);
+
+//Run search and filter cards based on name
+const search = document.querySelector('.search-input');
+search.addEventListener('keyup', e => {
+    let searchInput = e.target.value.toLowerCase();
+    let profileName = document.querySelectorAll('.card-name');
+    profileName.forEach (name => {
+        if (name.textContent.toLowerCase().includes(searchInput)) {
+            name.parentNode.parentNode.style.display = 'block';
+        } else {
+            name.parentNode.parentNode.style.display = 'none';
+        }
+    })
+})
+
+    // if search != name, card.style.display ='none'
