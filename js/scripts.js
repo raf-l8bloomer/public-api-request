@@ -1,6 +1,29 @@
 const gallery = document.querySelector('#gallery');
 const body = document.body;
 const searchContainer = document.querySelector('.search-container');
+const searchHtml = `
+    <form action="#" method="get">
+     <input type="search" id="search-input" class="search-input" placeholder="Search...">
+     <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+    </form>
+     `;
+
+//Add search bar
+searchContainer.insertAdjacentHTML('beforeend', searchHtml);
+
+//Run search and filter cards based on name
+const search = document.querySelector('.search-input');
+search.addEventListener('keyup', e => {
+    let searchInput = e.target.value.toLowerCase();
+    let profileName = document.querySelectorAll('.card-name');
+    profileName.forEach (name => {
+        if (name.textContent.toLowerCase().includes(searchInput)) {
+            name.parentNode.parentNode.style.display = 'block';
+        } else {
+            name.parentNode.parentNode.style.display = 'none';
+        }
+    })
+});
 
 fetch('https://randomuser.me/api/?nat=us&?inc=picture,name,email,location,cell,dob&results=12')
     .then(res => res.json())
@@ -37,8 +60,6 @@ function generateCard(data) {
     )
 };
 
-
-
 //Creates modal with more in-depth information from clicked profile card
 function generateModal(data, index) {
     const modalHTML = `
@@ -64,16 +85,13 @@ function generateModal(data, index) {
     const modalExit = document.querySelector('.modal-close-btn');
     modalExit.addEventListener('click', () => {
        closeModal();
-
     })
 }
-
 
 //When clicked, the whole modal is removed from the body
 function closeModal() {
     const modalContainer = document.querySelector('.modal-container');
     modalContainer.remove();
-    modalContainer.style.display = 'none';
 }
 
 //Changes long form birth date to MM/DD/YYYY format
@@ -87,25 +105,4 @@ function convertDate(birthdate){
     return shortDate;
 }
 
-//Add search bar
-const searchHtml = `
-    <form action="#" method="get">
-     <input type="search" id="search-input" class="search-input" placeholder="Search...">
-     <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
-    </form>
-     `
-    searchContainer.insertAdjacentHTML('beforeend', searchHtml);
 
-//Run search and filter cards based on name
-const search = document.querySelector('.search-input');
-search.addEventListener('keyup', e => {
-    let searchInput = e.target.value.toLowerCase();
-    let profileName = document.querySelectorAll('.card-name');
-    profileName.forEach (name => {
-        if (name.textContent.toLowerCase().includes(searchInput)) {
-            name.parentNode.parentNode.style.display = 'block';
-        } else {
-            name.parentNode.parentNode.style.display = 'none';
-        }
-    })
-});
