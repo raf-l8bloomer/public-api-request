@@ -65,7 +65,7 @@ function generateModal(data, index) {
 
     body.insertAdjacentHTML('beforeend', modalHTML);
 
-
+    //Activates modal exit button
     const modalExit = document.querySelector('.modal-close-btn');
     modalExit.addEventListener('click', () => {
        closeModal();
@@ -73,8 +73,9 @@ function generateModal(data, index) {
     })
 }
 
+//When clicked, the whole modal is removed from the body
 function closeModal() {
     const modalContainer = document.querySelector('.modal-container');
     modalContainer.remove();
-    modal.style.display = 'none';
+    modalContainer.style.display = 'none';
 }
